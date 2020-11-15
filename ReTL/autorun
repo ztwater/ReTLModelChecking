@@ -1,0 +1,10 @@
+#!/bin/bash
+bison -d parser.y
+flex parser.l
+cc lex.yy.c parser.tab.c func.c -o parser
+cat header.py > output.py
+python build_model.py $1 < model.txt >> output.py # read network weights
+./parser $1
+# time python output.py
+mprof run output.py
+mprof plot
